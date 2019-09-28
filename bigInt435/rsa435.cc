@@ -21,7 +21,8 @@ int main(){
 	 * code that uses exceptions. */
 	try {
 	  std::cout << "Implementing Fermat Test\n";
-	  BigUnsigned p,q,e(3),d;
+	  BigUnsigned p, q, e(3);
+
 	  makePrime(p);
 	  std::cout << "P is equal to: " << p << std::endl;
 	  makePrime(q);
@@ -32,16 +33,26 @@ int main(){
 	  file.close();
 
 	  BigUnsigned n = p * q ;
-	  BigUnsigned theta_N = (p - 1) * (q - 1);
+	  BigUnsigned theta_N = (p - 1) * (q - 1);	// Will need to convert to BigInteger later
+
 	  // Find odd number e that is relatively prime to n
 	  while (gcd(e, theta_N) != 1)
 	  	e += 2;
 	  std::cout << "Found e: " << e << std::endl;
 
 	  //  Compute d, which is the multiplicative inverse of e
-	  d = modinv(e, theta_N);
+	  BigInteger d;
+	  //d = modinv(e, theta_N);
+	  BigInteger Int_n = n;
+	  BigInteger myGCD = theta_N * e;
+
+	  BigInteger int_quot;
+
+	  // I'm Doing this to help throw out confusion of conflicting information of documentation vs notes...
+	  /***********	    m ,  n   ,  g  ,r,   s    corresponds to the eE equation: r*m + s*n == g		*********/
+	  extendedEuclidean(e,theta_N,myGCD,d,int_quot);
+	  //std::cout << "Using extended euclidean algorithm " << "e is: " << e << "\nand d is: " << d << "\nand int_quot is: " << int_quot << "\nand theta_N is: " << theta_N << "\nand myGCD is: " << myGCD << std::endl;
 	  std::cout << "Found d: " << d << std::endl;
-	  //extendedEuclidean()
 
 	  // Public Key
 	  file.open("e_n.txt");
@@ -99,11 +110,11 @@ bool fermatTest(BigUnsigned p)
 void makePrime(BigUnsigned &p)
 {
 	bool prime = false;
-	do {
+	while (!prime) {
 		p = 1;
 		for (int i(0); i < 400; i++)
 			p = p * 10 + rand();
 		prime = fermatTest(p);
 	}
-	while (!prime);
+
 }
