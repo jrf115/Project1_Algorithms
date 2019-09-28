@@ -22,7 +22,6 @@ int main(){
 	try {
 	  std::cout << "Implementing Fermat Test\n";
 	  BigUnsigned p, q, e(3);
-
 	  makePrime(p);
 	  std::cout << "P is equal to: " << p << std::endl;
 	  makePrime(q);
@@ -41,14 +40,10 @@ int main(){
 	  std::cout << "Found e: " << e << std::endl;
 
 	  //  Compute d, which is the multiplicative inverse of e
-	  BigInteger d;
-	  //d = modinv(e, theta_N);
-	  BigInteger Int_n = n;
+	  BigInteger d, int_quot;
 	  BigInteger myGCD = theta_N * e;
 
-	  BigInteger int_quot;
-
-	  // I'm Doing this to help throw out confusion of conflicting information of documentation vs notes...
+	  // I'm Doing this to help throw out confusion of conflicting information of documentation vs notes:
 	  /***********	    m ,  n   ,  g  ,r,   s    corresponds to the eE equation: r*m + s*n == g		*********/
 	  extendedEuclidean(e,theta_N,myGCD,d,int_quot);
 	  //std::cout << "Using extended euclidean algorithm " << "e is: " << e << "\nand d is: " << d << "\nand int_quot is: " << int_quot << "\nand theta_N is: " << theta_N << "\nand myGCD is: " << myGCD << std::endl;
@@ -63,26 +58,6 @@ int main(){
 	  file << d << '\n' << n;
 	  file.close();
 
-	  /*
-      std::cout << "a couple of test cases for 3460:435/535 Algorithms!!!\n";
-      BigUnsigned big1 = BigUnsigned(1);
-      for (int i=0;i<400;i++) {
-         big1 = big1*10 +rand();
-      }
-      std::cout << "my big1 !!!\n";
-      std::cout << big1;
-      BigUnsigned big2 = BigUnsigned(1);
-      for (int i=0;i<400;i++) {
-         big2 = big2*10 +rand();
-      }
-      std::cout << "my big2 !!!\n";
-      std::cout << big2;
-      std::cout << "my big3 = big1*big2 !!!\n";
-      BigUnsigned big3 = big1*big2;
-      std::cout <<big3;
-      std::cout << "my big3/big2 !!!\n";
-      std::cout <<big3/big2;
-	  */
 	} catch(char const* err) {
 		std::cout << "The library threw an exception:\n"
 			<< err << std::endl;
