@@ -46,7 +46,6 @@ int main(){
 	  // I'm Doing this to help throw out confusion of conflicting information of documentation vs notes:
 	  /***********	    m ,  n   ,  g  ,r,   s    corresponds to the eE equation: r*m + s*n == g		*********/
 	  extendedEuclidean(e,theta_N,myGCD,d,int_quot);
-	  //std::cout << "Using extended euclidean algorithm " << "e is: " << e << "\nand d is: " << d << "\nand int_quot is: " << int_quot << "\nand theta_N is: " << theta_N << "\nand myGCD is: " << myGCD << std::endl;
 	  std::cout << "Found d: " << d << std::endl;
 
 	  // Public Key
