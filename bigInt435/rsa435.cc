@@ -41,7 +41,7 @@ int main(){
 
 	  //  Compute d, which is the multiplicative inverse of e
 	  BigInteger d, int_quot;
-	  BigInteger myGCD = theta_N * e;
+	  BigInteger myGCD = 1; // Should be one when run
 
 	  // I'm Doing this to help throw out confusion of conflicting information of documentation vs notes:
 	  /***********	    m ,  n   ,  g  ,r,   s    corresponds to the eE equation: r*m + s*n == g		*********/
