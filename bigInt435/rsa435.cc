@@ -41,12 +41,16 @@ int main(){
 
 	  //  Compute d, which is the multiplicative inverse of e
 	  BigInteger d, int_quot;
-	  BigInteger myGCD = 1; // Should be one when run
+	  BigInteger myGCD = 1; // Should be 1 when run
 
 	  // I'm Doing this to help throw out confusion of conflicting information of documentation vs notes:
 	  /***********	    m ,  n   ,  g  ,r,   s    corresponds to the eE equation: r*m + s*n == g		*********/
 	  extendedEuclidean(e,theta_N,myGCD,d,int_quot);
 	  std::cout << "Found d: " << d << std::endl;
+
+	  // Check if d is negative. Need to add Theta(n) to it if so.
+	  if (d < 0)
+	  	d += theta_N;
 
 	  // Public Key
 	  file.open("e_n.txt");
