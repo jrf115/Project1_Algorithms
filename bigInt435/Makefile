@@ -12,6 +12,7 @@ library-objects = \
 	BigIntegerAlgorithms.o \
 	BigUnsignedInABase.o \
 	BigIntegerUtils.o \
+	sha256.o \
 
 library-headers = \
 	NumberlikeArray.hh \
@@ -20,6 +21,7 @@ library-headers = \
 	BigIntegerAlgorithms.hh \
 	BigUnsignedInABase.hh \
 	BigIntegerLibrary.hh \
+	sha256.h \
 
 # To ``make the library'', make all its objects using the implicit rule.
 library: $(library-objects)
@@ -46,11 +48,11 @@ testsuite-cleanfiles = \
 # The rules below build a program that uses the library.  They are preset to
 # build ``rsa435'' from ``rsa435.cpp''.  You can change the name(s) of the
 # source file(s) and program file to build your own program, or you can write
-# your own Makefile.
+# your own Makefile. (I changed rsa435 to sign.cc)
 
 # Components of the program.
-program = rsa435
-program-objects = rsa435.o
+program = sign
+program-objects = sign.o
 
 # Conservatively assume all the program source files depend on all the library
 # headers.  You can change this if it is not the case.
