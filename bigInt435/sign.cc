@@ -67,9 +67,18 @@ int main(int argc, char *argv[]) {
 
             // Sign/"decrypt" this hash value using the private key stored in d_n.txt;
             string signed_Message = signHash(sign_this_Content, d, n);
+
+            // Save the signature to "file.txt.signature"
             sign_File.open(filename + "signature");
             sign_File << signed_Message << endl << content;
             sign_File.close();
+            cout << "Message signed. Exiting...\n";
+        }
+        /* Step 2: Verify the signed file */
+        else if (*argv[1] == 'v')
+        {
+            cout << "Verifying " << filename << endl;
+
         }
 
     }  catch(char const* err) {
