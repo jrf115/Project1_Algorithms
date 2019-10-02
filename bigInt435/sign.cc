@@ -53,8 +53,8 @@ int main(int argc, char *argv[]) {
             string sign_this_Content = sha256(content);
             // cout << "sha256(content) reads: " << sign_this_Content << endl;
             file.open("d_n.txt");
-            getline(file, d_String);
-            getline(file, n_String);
+            file >> d_String;
+            file >> n_String;
             file.close();
             d = stringToBigUnsigned(d_String);
             n = stringToBigUnsigned(n_String);
@@ -82,7 +82,15 @@ int main(int argc, char *argv[]) {
 }
 
 /** This function will sign the incoming hash with Private Key(d,n) **/
+/** Use hash = 'm', in the equation signature = m^d mod n  to get signature **/
 string signHash(const string &hash, const BigUnsigned &d, const BigUnsigned &n)
 {
-    // modinv();
+    // Convert the hash's 16 bit number into its 10 bit number version.
+    // modexp expects base10...
+    BigUnsignedInABase base16_hash(hash, 16); // String to base16
+    BigInteger bigInt_hash(base16_hash); // base16 to base10
+    // The signature equation
+    BigUnsigned bigUnsigned_signature = modexp(bigInt_hash,d,n);
+    BigUnsignedInABase base16_signature(bigUnsigned_signature, 16);
+    return base16_signature;
 }
