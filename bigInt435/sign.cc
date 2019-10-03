@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
         string filename, signed_filename;
         ifstream file, secret, signed_File;
         ofstream sign_File;
+
         /** Step 1: Sign a given file */
         if (*argv[1] == 's')
         {   // Execute if told to sign
@@ -50,9 +51,8 @@ int main(int argc, char *argv[]) {
                 exit(0);
             }
             file.close();
-            // cout << "file content reads: " << content << endl;
             string sign_this_Content = sha256(content);
-            // cout << "sha256(content) reads: " << sign_this_Content << endl;
+            
             file.open("d_n.txt");
             file >> d_String;
             file >> n_String;
@@ -64,7 +64,6 @@ int main(int argc, char *argv[]) {
                 cout << "Error: d_n.txt is missing or doesn't have enough information";
                 exit(0);
             }
-            cout << "d_String reads: " << d_String << endl << "n_String reads: " << n_String << endl;
 
             // Sign/"decrypt" this hash value using the private key stored in d_n.txt;
             string signed_Message = signHash(sign_this_Content, d, n);
@@ -80,8 +79,8 @@ int main(int argc, char *argv[]) {
         {
             signed_filename = argv[2];
             filename = argv[3];
+
             // Load necessary files
-            cout << "Verifying " << filename << " using the signatured " << signed_filename << endl;
             // Obtain the signature from the signature file
             signed_File.open(signed_filename);
             string signature;
@@ -127,7 +126,7 @@ int main(int argc, char *argv[]) {
             BigUnsignedInABase base16_signature(signature, 16);
             BigUnsigned bigUnsigned_signature(base16_signature);
 
-            // Use the decryption formula: where m = bigUnsigned_signature, and (m^d % n) = signature;
+            // Use the decryption formula: where m = bigUnsigned_signature, and (m^d % n) = signature  (the encrypted);
             /** ((m^d % n)^e) % n **/
             BigUnsigned decrypted = modexp(bigUnsigned_signature, e, n);
             cout << "The decrypted is :" << decrypted << endl << "The content is :" << bigUnsigned_content << endl;
@@ -147,7 +146,7 @@ int main(int argc, char *argv[]) {
 }
 
 /** This function will sign the incoming hash with Private Key(d,n) **/
-/** Use hash = 'm', in the equation signature = m^d mod n  to get signature **/
+/** Use hash = 'm', in the encyryption equation signature = m^d mod n  to get signature **/
 string signHash(const string &hash, const BigUnsigned &d, const BigUnsigned &n)
 {
     // Convert the hash's 16 bit number into its 10 bit number version.
