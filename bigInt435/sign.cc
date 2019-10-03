@@ -80,11 +80,13 @@ int main(int argc, char *argv[]) {
         {
             signed_filename = argv[2];
             filename = argv[3];
-            // Generate a Sha-256 hash of the file to be signed("file.txt")
-            cout << "Verifying " << filename << " using the signed " << signed_filename << endl;
+            // Load necessary files
+            cout << "Verifying " << filename << " using the signatured " << signed_filename << endl;
+            // Obtain the signature from the signature file
             signed_File.open(signed_filename);
             string signature;
             signed_File >> signature;
+            cout << "Signature is: " << signature << endl;
             while (signed_File)
                 signed_File >> signed_content;
             signed_File.close();
@@ -106,14 +108,33 @@ int main(int argc, char *argv[]) {
             file.open("e_n.txt");
             file >> e_String;
             file >> n_String;
+            cout << "n is " << n_String << endl;
             file.close();
             if (e_String.empty() || n_String.empty())
             {
                 cout << "e or n are empty\n";
                 return 0;
             }
+            e = stringToBigUnsigned(e_String);
+            n = stringToBigUnsigned(n_String);
 
+            // SHA256 the content of the file and
+            // Compare the SHA-256 hash value of the content and the “encrypted” signature
+            string hashed_content = sha256(content);
+            BigUnsignedInABase base16_content(hashed_content, 16);
+            BigUnsigned bigUnsigned_content(base16_content);
 
+            BigUnsignedInABase base16_signature(signature, 16);
+            BigUnsigned bigUnsigned_signature(base16_signature);
+
+            // Use the decryption formula: where m = bigUnsigned_signature, and (m^d % n) = signature;
+            /** ((m^d % n)^e) % n **/
+            BigUnsigned decrypted = modexp(bigUnsigned_signature, e, n);
+            cout << "The decrypted is :" << decrypted << endl << "The content is :" << bigUnsigned_content << endl;
+            if (decrypted.compareTo(bigUnsigned_content) != 0)
+                cout << "Your file has been modified!\n";
+            else
+                cout << "Your message has not been modified.\n";
         }
 
     }  catch(char const* err) {
