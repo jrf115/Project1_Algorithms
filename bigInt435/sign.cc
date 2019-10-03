@@ -31,14 +31,15 @@ int main(int argc, char *argv[]) {
     try {
         std::cout << "sign.exe loaded\n";
         BigUnsigned d, e, n;
-        string d_String, e_String, n_String, content, line;
-        string filename = argv[2];
-        ifstream file, secret;
+        string d_String, e_String, n_String, content, signed_content, line;
+        string filename, signed_filename;
+        ifstream file, secret, signed_File;
         ofstream sign_File;
         /** Step 1: Sign a given file */
         if (*argv[1] == 's')
         {   // Execute if told to sign
             // Generate a SHA-256 hash of the content of the file to be signed
+            filename = argv[2];
             cout << "Reading " << filename << endl;
             file.open(filename);
             content.assign( std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() ); // stores entire file content
@@ -58,7 +59,7 @@ int main(int argc, char *argv[]) {
             file.close();
             d = stringToBigUnsigned(d_String);
             n = stringToBigUnsigned(n_String);
-            if (d_String.empty())
+            if (d_String.empty() || n_String.empty())
             {
                 cout << "Error: d_n.txt is missing or doesn't have enough information";
                 return 0;
@@ -69,7 +70,7 @@ int main(int argc, char *argv[]) {
             string signed_Message = signHash(sign_this_Content, d, n);
 
             // Save the signature to "file.txt.signature"
-            sign_File.open(filename + "signature");
+            sign_File.open(filename + ".signature");
             sign_File << signed_Message << endl << content;
             sign_File.close();
             cout << "Message signed. Exiting...\n";
@@ -77,7 +78,41 @@ int main(int argc, char *argv[]) {
         /* Step 2: Verify the signed file */
         else if (*argv[1] == 'v')
         {
-            cout << "Verifying " << filename << endl;
+            signed_filename = argv[2];
+            filename = argv[3];
+            // Generate a Sha-256 hash of the file to be signed("file.txt")
+            cout << "Verifying " << filename << " using the signed " << signed_filename << endl;
+            signed_File.open(signed_filename);
+            string signature;
+            signed_File >> signature;
+            while (signed_File)
+                signed_File >> signed_content;
+            signed_File.close();
+            if (signed_content.empty())
+            {
+                cout << signed_filename << " is either empty or missing.\n";
+                return 0;
+            }
+
+            file.open(filename);
+            content.assign( std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() ); // stores entire file content
+            file.close();
+            if (content.empty())
+            {
+                cout << filename << " is either empty or missing.\n";
+                return 0;
+            }
+
+            file.open("e_n.txt");
+            file >> e_String;
+            file >> n_String;
+            file.close();
+            if (e_String.empty() || n_String.empty())
+            {
+                cout << "e or n are empty\n";
+                return 0;
+            }
+
 
         }
 
