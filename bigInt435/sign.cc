@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
             if (content.empty())
             {
                 cout << "Error: File '" << filename << "' is empty or unavailible." << endl;
-                return 0;
+                exit(0);
             }
             file.close();
             // cout << "file content reads: " << content << endl;
@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
             if (d_String.empty() || n_String.empty())
             {
                 cout << "Error: d_n.txt is missing or doesn't have enough information";
-                return 0;
+                exit(0);
             }
             cout << "d_String reads: " << d_String << endl << "n_String reads: " << n_String << endl;
 
@@ -90,10 +90,10 @@ int main(int argc, char *argv[]) {
             while (signed_File)
                 signed_File >> signed_content;
             signed_File.close();
-            if (signed_content.empty())
+            if (signed_content.empty() || signature.empty())
             {
-                cout << signed_filename << " is either empty or missing.\n";
-                return 0;
+                cout << "error: " << signed_filename << " is either empty or missing.\n";
+                exit(0);
             }
 
             file.open(filename);
@@ -101,8 +101,8 @@ int main(int argc, char *argv[]) {
             file.close();
             if (content.empty())
             {
-                cout << filename << " is either empty or missing.\n";
-                return 0;
+                cout << "error: " << filename << " is either empty or missing.\n";
+                exit(0);
             }
 
             file.open("e_n.txt");
@@ -112,8 +112,8 @@ int main(int argc, char *argv[]) {
             file.close();
             if (e_String.empty() || n_String.empty())
             {
-                cout << "e or n are empty\n";
-                return 0;
+                cout << "error: " << "e or n are empty\n";
+                exit(0);
             }
             e = stringToBigUnsigned(e_String);
             n = stringToBigUnsigned(n_String);
