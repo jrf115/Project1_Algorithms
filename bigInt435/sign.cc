@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     try {
         std::cout << "sign.exe loaded\n";
         BigUnsigned d, e, n;
-        string d_String, e_String, n_String, content, signed_content, line;
+        string d_String, e_String, n_String, content, line;
         string filename, signed_filename;
         ifstream file, secret, signed_File;
         ofstream sign_File;
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
             }
             file.close();
             string sign_this_Content = sha256(content);
-            
+
             file.open("d_n.txt");
             file >> d_String;
             file >> n_String;
@@ -77,8 +77,8 @@ int main(int argc, char *argv[]) {
         /* Step 2: Verify the signed file */
         else if (*argv[1] == 'v')
         {
-            signed_filename = argv[2];
-            filename = argv[3];
+            filename = argv[2];
+            signed_filename = argv[3];
 
             // Load necessary files
             // Obtain the signature from the signature file
@@ -86,10 +86,8 @@ int main(int argc, char *argv[]) {
             string signature;
             signed_File >> signature;
             cout << "Signature is: " << signature << endl;
-            while (signed_File)
-                signed_File >> signed_content;
             signed_File.close();
-            if (signed_content.empty() || signature.empty())
+            if (signature.empty())
             {
                 cout << "error: " << signed_filename << " is either empty or missing.\n";
                 exit(0);
