@@ -82,10 +82,10 @@ int main(int argc, char *argv[]) {
 
             // Load necessary files
             // Obtain the signature from the signature file
+            cout << "Reading " << filename << " and comparing it to signature file '" << signed_filename << "'" << endl;
             signed_File.open(signed_filename);
             string signature;
             signed_File >> signature;
-            cout << "Signature is: " << signature << endl;
             signed_File.close();
             if (signature.empty())
             {
@@ -105,7 +105,6 @@ int main(int argc, char *argv[]) {
             file.open("e_n.txt");
             file >> e_String;
             file >> n_String;
-            cout << "n is " << n_String << endl;
             file.close();
             if (e_String.empty() || n_String.empty())
             {
@@ -127,11 +126,11 @@ int main(int argc, char *argv[]) {
             // Use the decryption formula: where m = bigUnsigned_signature, and (m^d % n) = signature  (the encrypted);
             /** ((m^d % n)^e) % n **/
             BigUnsigned decrypted = modexp(bigUnsigned_signature, e, n);
-            cout << "The decrypted is :" << decrypted << endl << "The content is :" << bigUnsigned_content << endl;
+
             if (decrypted.compareTo(bigUnsigned_content) != 0)
-                cout << "Your file has been modified!\n";
+                cout << "Files successfully compared! Your file has been modified.\n";
             else
-                cout << "Your message has not been modified.\n";
+                cout << "Files successfully compared! Your file has not been modified.\n";
         }
 
     }  catch(char const* err) {
