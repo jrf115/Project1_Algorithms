@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
 
             // Save the signature to "file.txt.signature"
             sign_File.open(filename + ".signature");
-            sign_File << signed_Message << endl << content;
+            sign_File << signed_Message;
             sign_File.close();
             cout << "Message signed. Exiting...\n";
         }
